@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Home</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Task Manager</h1>
+    <h3><a href="{% url 'tasks:new' %}">Create new task</a></h3>
+    <h3><a href="{% url 'tasks:list' %}">List all tasks</a></h3>
+{% endblock %}

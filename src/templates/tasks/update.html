@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{%  block title %}
+    <title>New task</title>
+{% endblock %}
+
+{% block content %}
+<a href="{{request.META.HTTP_REFERER}}"><button>back</button></a>
+<form method="post" action="{% url 'tasks:update' object.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
+{% endblock %}

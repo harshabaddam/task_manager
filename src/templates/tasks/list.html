@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Task List</title>
+{% endblock %}
+
+{% block content %}
+    <a href="{{request.META.HTTP_REFERER}}"><button>back</button></a>
+    <h2>Tasks</h2>
+    <p><a href="{% url 'home' %}">Home</a> | <a href="{% url 'tasks:new' %}">New task</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>|| id | </th>
+                <th>| Subject | </th>
+                <th>| Status || </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for each_task in object_list %}
+            <tr>
+                <td>| {{ each_task.id }} </td>
+                <td>| {{ each_task.subject }} </td>
+                <td>| {{ each_task.status }} </td>
+                <td><a href="{% url 'tasks:update' each_task.id %}">edit</a>|<a href="{% url 'tasks:delete' each_task.id %}">delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
