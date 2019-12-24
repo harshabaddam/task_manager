@@ -14,7 +14,7 @@ class TaskModel(models.Model):
     id = models.AutoField(primary_key=True)
     subject = models.CharField(max_length=255)
     description = models.TextField()
-    due_data = models.DateTimeField()
+    due_date = models.DateTimeField()
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='assign', db_column='assignee', null=True)
     status = models.CharField(max_length=11, choices=STATUS_CHOICES)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='create', db_column='create_by')

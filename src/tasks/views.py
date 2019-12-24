@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from tasks import models, forms
 
@@ -25,10 +27,10 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     Update View for the TaskModel
     """
     model = models.TaskModel
+    form_class = forms.TaskModelForm
     template_name = 'tasks/update.html'
     success_url = reverse_lazy('tasks:list')
     pk_url_kwarg = 'id'
-    fields = ['subject', 'description', 'status']
 
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
@@ -50,3 +52,25 @@ class TaskListView(LoginRequiredMixin, ListView):
     """
     model = models.TaskModel
     template_name = 'tasks/list.html'
+
+class TaskDetailView(LoginRequiredMixin, DetailView):
+    """
+    This view is to display the details of a task
+    """
+    model = models.TaskModel
+    template_name = 'tasks/detail.html'
+    pk_url_kwarg = 'id'
+
+
+@login_required
+def update_status(request):
+    """
+    update the status of the task
+    :return:
+    """
+    input_data = request.GET.copy()
+    task = models.TaskModel.objects.get(id=input_data['id'])
+    task.status = input_data['status']
+    task.updated_by = request.user
+    task.save()
+    return JsonResponse({'status': input_data['status']})

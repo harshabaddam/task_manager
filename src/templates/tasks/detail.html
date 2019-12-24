@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Task Details</title>
+{% endblock %}
+
+{% block content %}
+    <a href="{{request.META.HTTP_REFERER}}"><button>back</button></a>
+    <h2>Task-{{ object.id }}</h2>
+    <div><b>Update_status :</b>
+        <select id="status">
+            <option value="to do">To Do</option>
+            <option value="in progress">In Progress</option>
+            <option value="done">Done</option>
+        </select>
+    </div>
+    <div>
+        <p><b>Subject : </b> {{ object.subject }}</p>
+        <p><b>Description : </b> {{ object.description }}</p>
+        <p id="update"><b>Status : </b> {{ object.status }}</p>
+        <p><b>Assignee : </b> {{ object.assignee}}</p>
+        <p><b>Duedate : </b> {{ object.due_date }}</p>
+        <p><b>Created By : </b> {{ object.created_by }}</p>
+        <p><b>Created Date : </b> {{ object.created_date }}</p>
+        <p><b>Updated By : </b> {{ object.updated_by }}</p>
+        <p><b>Updated Date : </b> {{ object.updated_date }}</p>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("#status option[value='{{object.status}}']").attr({'selected':'selected'});
+            $("#status").on( 'input', function(){
+                $.ajax({
+                    url: "{% url 'tasks:update_status' %}",
+                    data: {
+                        'id': {{ object.id }},
+                        'status': $("#status").val()
+                    },
+                    success: function(data){
+                        $("#update").html("<b>Status : </b>"+data['status']);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

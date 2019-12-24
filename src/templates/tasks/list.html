@@ -22,7 +22,7 @@
                 <td>| {{ each_task.id }} </td>
                 <td>| {{ each_task.subject }} </td>
                 <td>| {{ each_task.status }} </td>
-                <td><a href="{% url 'tasks:update' each_task.id %}">edit</a>|<a href="{% url 'tasks:delete' each_task.id %}">delete</a></td>
+                <td><a href="{% url 'tasks:view' each_task.id %}">view</a>|<a href="{% url 'tasks:update' each_task.id %}">edit</a>|<a href="{% url 'tasks:delete' each_task.id %}">delete</a></td>
             </tr>
             {% endfor %}
         </tbody>
